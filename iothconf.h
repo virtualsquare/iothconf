@@ -24,7 +24,7 @@
  *   dns=.... : set a static address for a DNS server
  *   domain=.... : set a static domain for the dns search
  *   debug : show the status of the current configuration parameters
- *   -static, -et, -dhcp, -dhcp6, -rd, -auto, -auto4, -auto
+ *   -static, -eth, -dhcp, -dhcp6, -rd, -auto, -auto4, -auto
  *     (and all the synonyms + a heading minus)
  *     clean (undo) the configuration
  *
@@ -53,7 +53,7 @@ int ioth_config(struct ioth *stack, char *config);
  *   iface=... : select the interface e.g. iface=eth0 (default value vde0)
  *   ifindex=... : id of the interface (it can be used instead of iface)
  *
- *   It returns NULL and errno = 0 if nothing chaned since the previous call.
+ *   It returns NULL and errno = 0 if nothing changed since the previous call.
  *   In case of error it returns NULL and errno != 0
  */
 
