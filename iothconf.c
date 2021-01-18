@@ -37,8 +37,7 @@ int iothconf_eth(struct ioth *stack, unsigned int ifindex,
 	(void) config_flags;
 	uint8_t macaddr[ETH_ALEN];
 	if (mac) {
-		sscanf(mac,"%hhx:%hhx:%hhx:%hhx:%hhx:%hhx", &macaddr[0], &macaddr[1], &macaddr[2],
-				&macaddr[3], &macaddr[4], &macaddr[5]);
+		ioth_macton(mac, macaddr);
 		ioth_linksetaddr(stack,ifindex, macaddr);
 	} else if (fqdn) {
 		iothconf_hashmac(macaddr, fqdn);
@@ -210,7 +209,7 @@ int ioth_config(struct ioth *stack, char *config) {
 		}
 	}
 	if (iface == NULL) iface = DEFAULT_INTERFACE;
-	if (ifindex == 0) ifindex = ioth_if_nametoindex(stack, DEFAULT_INTERFACE);
+	if (ifindex == 0) ifindex = ioth_if_nametoindex(stack, iface);
 	if (ifindex <= 0)
 		return errno = EINVAL, -1;
 	int retvalue = 0;

@@ -425,9 +425,10 @@ static int iothconf_dhcp_proto(struct ioth *stack, unsigned int ifindex, const c
 		.sll_family = AF_PACKET,
 		.sll_protocol = htons(ETH_P_IP),
 		.sll_ifindex = ifindex,
+		.sll_halen = ETH_ALEN,
 		.sll_addr = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff}
 	};
-	ioth_bind(packet_socket, (struct sockaddr *) &sll, sizeof(sll));
+	//ioth_bind(packet_socket, (struct sockaddr *) &sll, sizeof(sll));
 	struct dhcpdata dhcpdata = {
 		.stack = stack,
 		.ifindex = ifindex,

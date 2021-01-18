@@ -33,7 +33,7 @@ static void configure(struct ioth *stack, char *config) {
 			else {
 				printf("ioth_config confirmed:");
 				if (rv & IOTHCONF_STATIC) printf(" static");
-				if (rv & IOTHCONF_ETH) printf(" etc");
+				if (rv & IOTHCONF_ETH) printf(" eth");
 				if (rv & IOTHCONF_DHCP) printf(" dhcp");
 				if (rv & IOTHCONF_DHCPV6) printf(" dhcpv6");
 				if (rv & IOTHCONF_RD) printf(" rd");
