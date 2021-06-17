@@ -46,7 +46,7 @@ int ioth_config(struct ioth *stack, char *config);
 #define IOTHCONF_DHCPV6   1 << 3
 #define IOTHCONF_RD       1 << 4
 
-/* ioth_resolvconf returns a string in resolv.confi(5) format.
+/* ioth_resolvconf returns a string in resolv.conf(5) format.
  *	 the string is dynamically allocated (use free(3) to deallocate it).
  *	 config is a comma separated list of flags and variable assignments:
  *

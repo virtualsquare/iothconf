@@ -6,7 +6,7 @@
 /* Data structure for ioth_config.
    struct ioth_confdata is the header.
    it is currently managed as a simple list, could be re-implemented as a more efficient
-   data structure, each ioth node should have one to a few addresses so it would not care after all.
+   data structure, each ioth node should have one to a few addresses so it would not matter after all.
 
    entries are timestamped, each time is created or confirmed the timestamp is updated.
    The tiemstamp of the latest message processes is stored as an element in the data structure itself:
@@ -62,7 +62,7 @@
 
 struct ioth;
 
-/* add a record, it the same record stll exists, just update the timestamp */
+/* add a record, (or just update the timestamp if the same record already exists */
 #define ioth_confdata_add_data(stack, ifindex, type, time, flags, datatype, ...) \
 	ioth_confdata_add(stack, ifindex, type, time, flags,\
 			&((datatype) { __VA_ARGS__ }), sizeof(datatype))
@@ -82,7 +82,7 @@ void ioth_confdata_add(struct ioth *stack, uint32_t ifindex, uint8_t type, time_
 #define IOTH_CONFDATA_ANYSTACK ((void *) -1)
 // all records
 #define IOTH_CONFDATA_MASK_ALL 0xff
-// all record of a section (static, dhc4, dhcp6, rd)
+// all records of a section (static, dhc4, dhcp6, rd)
 #define IOTH_CONFDATA_MASK_TYPE 0xf0
 // all DNS records
 #define IOTH_CONFDATA_DNS_BASE 0x48

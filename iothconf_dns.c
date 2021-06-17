@@ -45,7 +45,7 @@ struct iothconf_resolvconf_cb_arg {
 	char **domains;
 };
 
-/* count how many domains are there in data (maybe there are dup entries from
+/* count how many domains are included in data (maybe there are dup entries from
 	 different sources (dhcpv4 dhcpv6) */
 static int iothconf_resolvconf_count_cb(void *data, void *arg) {
 	struct iothconf_resolvconf_cb_arg *cbarg = arg;
