@@ -8,7 +8,7 @@
  *   ifindex=... : id of the interface (it can be used instead of iface)
  *   fqdn=.... : set the fully qualified domain name for dhcp, dhcpv6 slaac-hash-autoconf
  *   mac=... : (or macaddr) define the macaddr for eth here below. 
-               (e.g. eth,mac=10:a1:b2:c3:d4:e5)
+ (e.g. eth,mac=10:a1:b2:c3:d4:e5)
  *   eth : turn on the interface (and set the MAC address if requested 
  *              or a hash based MAC address if fqdn is defined)
  *   dhcp : (or dhcp4 or dhcpv4) use dhcp (IPv4)

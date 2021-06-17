@@ -416,7 +416,7 @@ static int dhcp_get(int sendtype, int fd, struct dhcpdata *data) {
 						char dns_search_mstr[dns_search_len];
 						int mstr_len = iothconf_domain2mstr(dns_search_addr, dns_search_mstr, dns_search_len);
 						ioth_confdata_add(data->stack, data->ifindex, IOTH_CONFDATA_DHCP6_DOMAIN, data->timestamp, 0,
-                dns_search_mstr, mstr_len);
+								dns_search_mstr, mstr_len);
 					}
 					ioth_confdata_write_timestamp(data->stack, data->ifindex, IOTH_CONFDATA_DHCP6_TIMESTAMP, data->timestamp);
 					return 0;

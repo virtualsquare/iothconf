@@ -176,14 +176,14 @@ void ioth_confdata_write_timestamp(struct ioth *stack, uint32_t ifindex, uint8_t
 }
 
 static int del_timestamp_cb(void *data, void *arg) {
-  time_t *timestamp = arg;
-  struct ioth_confdata *ioth_confdata = ((struct ioth_confdata *) data) - 1;
-  *timestamp = ioth_confdata->timestamp;
-  return IOTH_CONFDATA_FORALL_DELETE;
+	time_t *timestamp = arg;
+	struct ioth_confdata *ioth_confdata = ((struct ioth_confdata *) data) - 1;
+	*timestamp = ioth_confdata->timestamp;
+	return IOTH_CONFDATA_FORALL_DELETE;
 }
 
 void ioth_confdata_del_timestamp(struct ioth *stack, uint32_t ifindex, uint8_t type) {
-  time_t timestamp = 0;
-  type = TIMESTAMP(type);
-  ioth_confdata_forall(stack, ifindex, type, del_timestamp_cb, &timestamp);
+	time_t timestamp = 0;
+	type = TIMESTAMP(type);
+	ioth_confdata_forall(stack, ifindex, type, del_timestamp_cb, &timestamp);
 }

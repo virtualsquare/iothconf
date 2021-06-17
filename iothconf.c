@@ -49,7 +49,7 @@ int iothconf_eth(struct ioth *stack, unsigned int ifindex,
 }
 
 void iothconf_cleaneth(struct ioth *stack, unsigned int ifindex, uint32_t config_flags) {
-  (void) config_flags;
+	(void) config_flags;
 	ioth_linksetupdown(stack, ifindex, 0);
 }
 
@@ -70,29 +70,29 @@ static int iothconf_static(struct ioth *stack, unsigned int ifindex, char **tags
 					prefix = strtol(prefixstr, NULL, 10);
 				}
 				if (inet_pton(AF_INET6, *args, addr))
-          ioth_confdata_add_data(stack, ifindex, IOTH_CONFDATA_STATIC6_ADDR, ioth_timestamp, 0,
-              struct ioth_confdata_ip6addr,
+					ioth_confdata_add_data(stack, ifindex, IOTH_CONFDATA_STATIC6_ADDR, ioth_timestamp, 0,
+							struct ioth_confdata_ip6addr,
 							.addr = *((struct in6_addr *)(&addr)),
 							.prefixlen = (prefix == 0) ? 64 : prefix,
 							.preferred_lifetime = TIME_INFINITY,
 							.valid_lifetime = TIME_INFINITY);
-        else if (inet_pton(AF_INET, *args, addr))
-          ioth_confdata_add_data(stack, ifindex, IOTH_CONFDATA_STATIC4_ADDR, ioth_timestamp, 0,
-              struct ioth_confdata_ipaddr,
+				else if (inet_pton(AF_INET, *args, addr))
+					ioth_confdata_add_data(stack, ifindex, IOTH_CONFDATA_STATIC4_ADDR, ioth_timestamp, 0,
+							struct ioth_confdata_ipaddr,
 							.addr = *((struct in_addr *)(&addr)),
 							.prefixlen = (prefix == 0) ? 24 : prefix,
 							.leasetime = TIME_INFINITY);
-        break;
+				break;
 			case STRCASE(g,w):
 				if (*args == NULL) break;
 				if (inet_pton(AF_INET6, *args, addr))
 					ioth_confdata_add_data(stack, ifindex, IOTH_CONFDATA_STATIC6_ROUTE, ioth_timestamp, 0,
-              struct ioth_confdata_ip6addr,
-              .addr = *((struct in6_addr *)(&addr)),
-              .valid_lifetime = TIME_INFINITY);
+							struct ioth_confdata_ip6addr,
+							.addr = *((struct in6_addr *)(&addr)),
+							.valid_lifetime = TIME_INFINITY);
 				else if (inet_pton(AF_INET, *args, addr))
-          ioth_confdata_add(stack, ifindex, IOTH_CONFDATA_STATIC4_ROUTE, ioth_timestamp, 0,
-              addr, sizeof(struct in_addr));
+					ioth_confdata_add(stack, ifindex, IOTH_CONFDATA_STATIC4_ROUTE, ioth_timestamp, 0,
+							addr, sizeof(struct in_addr));
 				break;
 			case STRCASE(d,n,s):
 				if (inet_pton(AF_INET6, *args, addr))
@@ -163,31 +163,31 @@ int ioth_config(struct ioth *stack, char *config) {
 													 clean_flags |= IOTHCONF_STATIC; break;
 			case STRCASE(minus,e,t,h): 
 													 clean_flags |= IOTHCONF_ETH; break;
-      case STRCASE(minus,d,h,c,p):
-      case STRCASE(minus,d,h,c,p,4):
-      case STRCASE(minus,d,h,c,p,v,4):
-                           clean_flags |= IOTHCONF_DHCP; break;
-      case STRCASE(minus,d,h,c,p,6):
-      case STRCASE(minus,d,h,c,p,v,6):
-                           clean_flags |= IOTHCONF_DHCPV6; break;
-      case STRCASE(minus,r,d):
-      case STRCASE(minus,r,d,6):
-                           clean_flags |= IOTHCONF_RD; break;
+			case STRCASE(minus,d,h,c,p):
+			case STRCASE(minus,d,h,c,p,4):
+			case STRCASE(minus,d,h,c,p,v,4):
+													 clean_flags |= IOTHCONF_DHCP; break;
+			case STRCASE(minus,d,h,c,p,6):
+			case STRCASE(minus,d,h,c,p,v,6):
+													 clean_flags |= IOTHCONF_DHCPV6; break;
+			case STRCASE(minus,r,d):
+			case STRCASE(minus,r,d,6):
+													 clean_flags |= IOTHCONF_RD; break;
 			case STRCASE(minus,a,u,t,o):
 			case STRCASE(minus,a,l,l):
 													 clean_flags |=
-                             IOTHCONF_ETH | IOTHCONF_DHCP | IOTHCONF_DHCPV6 | IOTHCONF_RD;
-                           break;
-      case STRCASE(minus,a,u,t,o,4):
-      case STRCASE(minus,a,u,t,o,v,4):
-                           clean_flags |=
-                             IOTHCONF_ETH | IOTHCONF_DHCP;
-                           break;
-      case STRCASE(minus,a,u,t,o,6):
-      case STRCASE(minus,a,u,t,o,v,6):
-                           clean_flags |=
-                             IOTHCONF_ETH | IOTHCONF_DHCPV6 | IOTHCONF_RD;
-                           break;
+														 IOTHCONF_ETH | IOTHCONF_DHCP | IOTHCONF_DHCPV6 | IOTHCONF_RD;
+													 break;
+			case STRCASE(minus,a,u,t,o,4):
+			case STRCASE(minus,a,u,t,o,v,4):
+													 clean_flags |=
+														 IOTHCONF_ETH | IOTHCONF_DHCP;
+													 break;
+			case STRCASE(minus,a,u,t,o,6):
+			case STRCASE(minus,a,u,t,o,v,6):
+													 clean_flags |=
+														 IOTHCONF_ETH | IOTHCONF_DHCPV6 | IOTHCONF_RD;
+													 break;
 
 			case STRCASE(f,q,d,n): fqdn = args[i]; break;
 			case STRCASE(i,f,a,c,e): iface = args[i]; break;
@@ -201,11 +201,11 @@ int ioth_config(struct ioth *stack, char *config) {
 			case STRCASE(g,w):
 			case STRCASE(d,n,s):
 			case STRCASE(d,o,m,a,i,n):
-															 config_flags |= IOTHCONF_STATIC; break;
+																	 config_flags |= IOTHCONF_STATIC; break;
 			case STRCASE(d,e,b,u,g):
-															 debug = 1; break;
+																	 debug = 1; break;
 			default:
-															 return errno = EINVAL, -1;
+																	 return errno = EINVAL, -1;
 		}
 	}
 	if (iface == NULL) iface = DEFAULT_INTERFACE;
@@ -215,11 +215,11 @@ int ioth_config(struct ioth *stack, char *config) {
 	int retvalue = 0;
 	if (clean_flags & IOTHCONF_STATIC)
 		iothconf_ip_clean(stack, ifindex, IOTH_CONFDATA_STATIC_TIMESTAMP, 0);
-  if (clean_flags & IOTHCONF_RD)
+	if (clean_flags & IOTHCONF_RD)
 		iothconf_ip_clean(stack, ifindex, IOTH_CONFDATA_RD6_TIMESTAMP, 0);
-  if (clean_flags & IOTHCONF_DHCPV6)
+	if (clean_flags & IOTHCONF_DHCPV6)
 		iothconf_ip_clean(stack, ifindex, IOTH_CONFDATA_DHCP6_TIMESTAMP, 0);
-  if (clean_flags & IOTHCONF_DHCP)
+	if (clean_flags & IOTHCONF_DHCP)
 		iothconf_ip_clean(stack, ifindex, IOTH_CONFDATA_DHCP4_TIMESTAMP, 0);
 	if (clean_flags & IOTHCONF_ETH)
 		iothconf_cleaneth(stack, ifindex, 0);
@@ -244,31 +244,31 @@ int ioth_config(struct ioth *stack, char *config) {
 }
 
 char *ioth_resolvconf(struct ioth *stack, char *config) {
-  char *iface = NULL;
-  int ifindex = 0;
-  if (config == NULL) config = "";
-  int tagc = stropt(config, NULL, NULL, NULL);
-  char buf[strlen(config) + 1];
-  if(tagc > 1) {
-    char *tags[tagc];
-    char *args[tagc];
-    stropt(config, tags, args, buf);
-    for (int i = 0; i < tagc - 1; i++) {
-      switch(strcase(tags[i])) {
-        case STRCASE(i,f,a,c,e): iface = args[i]; break;
-        case STRCASE(i,f,i,n,d,e,x):
-                                 if (args[i] != NULL)
-                                   ifindex = strtoul(args[i], NULL, 10);
-                                 break;
-        default:
-                                 return errno = EINVAL, NULL;
-      }
-    }
-  }
-  if (iface == NULL) iface = DEFAULT_INTERFACE;
-  if (ifindex == 0) ifindex = ioth_if_nametoindex(stack, DEFAULT_INTERFACE);
-  if (ifindex <= 0)
-    return errno = EINVAL, NULL;
-  return iothconf_resolvconf(stack, ifindex);
+	char *iface = NULL;
+	int ifindex = 0;
+	if (config == NULL) config = "";
+	int tagc = stropt(config, NULL, NULL, NULL);
+	char buf[strlen(config) + 1];
+	if(tagc > 1) {
+		char *tags[tagc];
+		char *args[tagc];
+		stropt(config, tags, args, buf);
+		for (int i = 0; i < tagc - 1; i++) {
+			switch(strcase(tags[i])) {
+				case STRCASE(i,f,a,c,e): iface = args[i]; break;
+				case STRCASE(i,f,i,n,d,e,x):
+																 if (args[i] != NULL)
+																	 ifindex = strtoul(args[i], NULL, 10);
+																 break;
+				default:
+																 return errno = EINVAL, NULL;
+			}
+		}
+	}
+	if (iface == NULL) iface = DEFAULT_INTERFACE;
+	if (ifindex == 0) ifindex = ioth_if_nametoindex(stack, DEFAULT_INTERFACE);
+	if (ifindex <= 0)
+		return errno = EINVAL, NULL;
+	return iothconf_resolvconf(stack, ifindex);
 }
 

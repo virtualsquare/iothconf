@@ -53,7 +53,7 @@ static int iothconf_resolvconf_count_cb(void *data, void *arg) {
 	switch (type) {
 		case IOTH_CONFDATA_DHCP4_DOMAIN:
 		case IOTH_CONFDATA_DHCP6_DOMAIN:
-    case IOTH_CONFDATA_STATIC_DOMAIN:
+		case IOTH_CONFDATA_STATIC_DOMAIN:
 			if (!(ioth_confdata_setflags(data, IOTH_CONFDATA_ACTIVE) & IOTH_CONFDATA_ACTIVE))
 				cbarg->countupdated++;
 			cbarg->countdomains += count_mstr(data, ioth_confdata_getdatalen(data));
@@ -84,25 +84,25 @@ static int iothconf_resolvconf_newdom(char *domain, struct iothconf_resolvconf_c
 	 one loop: domains in cbarg are pointer to data elements
 	 the entire operation must be done in mutual exclusion */
 static int iothconf_resolvconf_domain_cb(void *data, void *arg) {
-  struct iothconf_resolvconf_cb_arg *cbarg = arg;
-  uint8_t type = ioth_confdata_gettype(data);
-  switch (type) {
-    case IOTH_CONFDATA_DHCP4_DOMAIN:
-    case IOTH_CONFDATA_DHCP6_DOMAIN:
-    case IOTH_CONFDATA_STATIC_DOMAIN:
+	struct iothconf_resolvconf_cb_arg *cbarg = arg;
+	uint8_t type = ioth_confdata_gettype(data);
+	switch (type) {
+		case IOTH_CONFDATA_DHCP4_DOMAIN:
+		case IOTH_CONFDATA_DHCP6_DOMAIN:
+		case IOTH_CONFDATA_STATIC_DOMAIN:
 			FORmstr(domain, data, ioth_confdata_getdatalen(data)) {
 				if (iothconf_resolvconf_newdom(domain, cbarg))
 					fprintf(cbarg->rc, " %s", domain);
 			}
-      break;
-  }
-  return 0;
+			break;
+	}
+	return 0;
 }
 
 /* add "nameserver" lines in resolv.conf */
 static int iothconf_resolvconf_dns_cb(void *data, void *arg) {
-  struct iothconf_resolvconf_cb_arg *cbarg = arg;
-  uint8_t type = ioth_confdata_gettype(data);
+	struct iothconf_resolvconf_cb_arg *cbarg = arg;
+	uint8_t type = ioth_confdata_gettype(data);
 	uint8_t *scan = data;
 	uint8_t *limit = scan + ioth_confdata_getdatalen(data);
 	while (scan < limit) {

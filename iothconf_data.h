@@ -4,28 +4,28 @@
 #include <netinet/in.h>
 
 /* Data structure for ioth_config.
-   struct ioth_confdata is the header.
-   it is currently managed as a simple list, could be re-implemented as a more efficient
-   data structure, each ioth node should have one to a few addresses so it would not matter after all.
+	 struct ioth_confdata is the header.
+	 it is currently managed as a simple list, could be re-implemented as a more efficient
+	 data structure, each ioth node should have one to a few addresses so it would not matter after all.
 
-   entries are timestamped, each time is created or confirmed the timestamp is updated.
-   The tiemstamp of the latest message processes is stored as an element in the data structure itself:
-   type 0x40 for DHCP, 0x50 for RD (rotuer advertisement), 0x60 for DHCPv6, 0x70 for static defs.
-   (0x40 is the msg timestamp for all 0x4* records, 0x50 for 0x5*, 0x60 for 0x6*, and 0x70 for 0x7*)
+	 entries are timestamped, each time is created or confirmed the timestamp is updated.
+	 The tiemstamp of the latest message processes is stored as an element in the data structure itself:
+	 type 0x40 for DHCP, 0x50 for RD (rotuer advertisement), 0x60 for DHCPv6, 0x70 for static defs.
+	 (0x40 is the msg timestamp for all 0x4* records, 0x50 for 0x5*, 0x60 for 0x6*, and 0x70 for 0x7*)
 
-   Each update operation takes the following steps:
-   - generate a new msg timestamp (do not record it in the data structure yet!).
-   - add/update each record from the message using the new generated timestamp
-   - update the new timestamp entry 0x40, 0x50, 0x60 or 0x70.
+	 Each update operation takes the following steps:
+	 - generate a new msg timestamp (do not record it in the data structure yet!).
+	 - add/update each record from the message using the new generated timestamp
+	 - update the new timestamp entry 0x40, 0x50, 0x60 or 0x70.
 
-   The retrieve operation follows:
-   - read the message timestamp (0x40, 0x50 or 0x60)
-   - all the records with timestamp >= message timestamp are valid
-   - those with timestamp < message timestamp are obsolete (have not been confirmed in the latest msg).
+	 The retrieve operation follows:
+	 - read the message timestamp (0x40, 0x50 or 0x60)
+	 - all the records with timestamp >= message timestamp are valid
+	 - those with timestamp < message timestamp are obsolete (have not been confirmed in the latest msg).
 
 	 01xx 100x hex 48,49,58,59,68,69,78,79 are reserved fod DNS
 	 01xx 101x hex 4a,4b,5a,5b,6a,6b,7a,7b are reserved fod DOMAIN
-   */
+ */
 
 #define IOTH_CONFDATA_STATIC_TIMESTAMP 0x70 // no data
 #define IOTH_CONFDATA_STATIC4_ADDR     0x72 // struct ioth_confdata_ipaddr
@@ -74,7 +74,7 @@ void ioth_confdata_add(struct ioth *stack, uint32_t ifindex, uint8_t type, time_
 	 stack/ifindex/type are select keys.
 	 stack can be IOTH_CONFDATA_ANYSTACK, ifindex and type can be zero.
 	 for each selected record run the callback function "callback"
-	 */
+ */
 
 #define IOTH_CONFDATA_FORALL_DELETE 0x01
 #define IOTH_CONFDATA_FORALL_BREAK  0x02
@@ -99,7 +99,7 @@ void ioth_confdata_forall_mask(struct ioth *stack, uint32_t ifindex,
 		uint8_t type, uint8_t mask, ioth_confdata_forall_cb *callback,  void *callback_arg);
 
 static inline void ioth_confdata_forall(struct ioth *stack, uint32_t ifindex,
-    uint8_t type, ioth_confdata_forall_cb *callback,  void *callback_arg) {
+		uint8_t type, ioth_confdata_forall_cb *callback,  void *callback_arg) {
 	ioth_confdata_forall_mask(stack, ifindex, type, IOTH_CONFDATA_MASK_ALL,
 			callback, callback_arg);
 }

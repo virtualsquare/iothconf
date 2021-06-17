@@ -24,76 +24,76 @@
 #include <iothconf_mod.h>
 
 static int ioth_ip_setaddr6(void *data, void *arg) {
-  time_t *latest_timestamp = arg;
-  struct ioth_confdata_ip6addr *ipaddr =  data;
-  struct ioth *stack = ioth_confdata_getstack(data);
-  time_t timestamp = ioth_confdata_gettimestamp(data);
-  if (timestamp < *latest_timestamp) {
-    if (ioth_confdata_clrflags(data, IOTH_CONFDATA_ACTIVE) & IOTH_CONFDATA_ACTIVE)
-      ioth_ipaddr_del(stack, AF_INET6, &ipaddr->addr, ipaddr->prefixlen, ioth_confdata_getifindex(data));
-    return IOTH_CONFDATA_FORALL_DELETE;
-  } else {
-    if (!(ioth_confdata_setflags(data, IOTH_CONFDATA_ACTIVE) & IOTH_CONFDATA_ACTIVE))
-      ioth_ipaddr_add(stack, AF_INET6, &ipaddr->addr, ipaddr->prefixlen, ioth_confdata_getifindex(data));
-    return 0;
-  }
+	time_t *latest_timestamp = arg;
+	struct ioth_confdata_ip6addr *ipaddr =  data;
+	struct ioth *stack = ioth_confdata_getstack(data);
+	time_t timestamp = ioth_confdata_gettimestamp(data);
+	if (timestamp < *latest_timestamp) {
+		if (ioth_confdata_clrflags(data, IOTH_CONFDATA_ACTIVE) & IOTH_CONFDATA_ACTIVE)
+			ioth_ipaddr_del(stack, AF_INET6, &ipaddr->addr, ipaddr->prefixlen, ioth_confdata_getifindex(data));
+		return IOTH_CONFDATA_FORALL_DELETE;
+	} else {
+		if (!(ioth_confdata_setflags(data, IOTH_CONFDATA_ACTIVE) & IOTH_CONFDATA_ACTIVE))
+			ioth_ipaddr_add(stack, AF_INET6, &ipaddr->addr, ipaddr->prefixlen, ioth_confdata_getifindex(data));
+		return 0;
+	}
 }
 
 static int ioth_ip_setroute6(void *data, void *arg) {
-  time_t *latest_timestamp = arg;
-  struct ioth_confdata_ip6addr *ipaddr =  data;
-  struct ioth *stack = ioth_confdata_getstack(data);
-  time_t timestamp = ioth_confdata_gettimestamp(data);
-  if (timestamp < *latest_timestamp) {
-    if (ioth_confdata_clrflags(data, IOTH_CONFDATA_ACTIVE) & IOTH_CONFDATA_ACTIVE)
-      ioth_iproute_del(stack, AF_INET6, NULL, 0, &ipaddr->addr, ioth_confdata_getifindex(data));
-    return IOTH_CONFDATA_FORALL_DELETE;
-  } else {
-    if (!(ioth_confdata_setflags(data, IOTH_CONFDATA_ACTIVE) & IOTH_CONFDATA_ACTIVE))
-      ioth_iproute_add(stack, AF_INET6, NULL, 0, &ipaddr->addr, ioth_confdata_getifindex(data));
-    return 0;
-  }
+	time_t *latest_timestamp = arg;
+	struct ioth_confdata_ip6addr *ipaddr =  data;
+	struct ioth *stack = ioth_confdata_getstack(data);
+	time_t timestamp = ioth_confdata_gettimestamp(data);
+	if (timestamp < *latest_timestamp) {
+		if (ioth_confdata_clrflags(data, IOTH_CONFDATA_ACTIVE) & IOTH_CONFDATA_ACTIVE)
+			ioth_iproute_del(stack, AF_INET6, NULL, 0, &ipaddr->addr, ioth_confdata_getifindex(data));
+		return IOTH_CONFDATA_FORALL_DELETE;
+	} else {
+		if (!(ioth_confdata_setflags(data, IOTH_CONFDATA_ACTIVE) & IOTH_CONFDATA_ACTIVE))
+			ioth_iproute_add(stack, AF_INET6, NULL, 0, &ipaddr->addr, ioth_confdata_getifindex(data));
+		return 0;
+	}
 }
 
 static int ioth_ip_setaddr4(void *data, void *arg) {
-  time_t *latest_timestamp = arg;
-  struct ioth_confdata_ipaddr *ipaddr =  data;
-  struct ioth *stack = ioth_confdata_getstack(data);
-  time_t timestamp = ioth_confdata_gettimestamp(data);
-  if (timestamp < *latest_timestamp) {
-    if (ioth_confdata_clrflags(data, IOTH_CONFDATA_ACTIVE) & IOTH_CONFDATA_ACTIVE)
-      ioth_ipaddr_del(stack, AF_INET, &ipaddr->addr, ipaddr->prefixlen, ioth_confdata_getifindex(data));
-    return IOTH_CONFDATA_FORALL_DELETE;
-  } else {
-    if (!(ioth_confdata_setflags(data, IOTH_CONFDATA_ACTIVE) & IOTH_CONFDATA_ACTIVE))
-      ioth_ipaddr_add(stack, AF_INET, &ipaddr->addr, ipaddr->prefixlen, ioth_confdata_getifindex(data));
-    return 0;
-  }
+	time_t *latest_timestamp = arg;
+	struct ioth_confdata_ipaddr *ipaddr =  data;
+	struct ioth *stack = ioth_confdata_getstack(data);
+	time_t timestamp = ioth_confdata_gettimestamp(data);
+	if (timestamp < *latest_timestamp) {
+		if (ioth_confdata_clrflags(data, IOTH_CONFDATA_ACTIVE) & IOTH_CONFDATA_ACTIVE)
+			ioth_ipaddr_del(stack, AF_INET, &ipaddr->addr, ipaddr->prefixlen, ioth_confdata_getifindex(data));
+		return IOTH_CONFDATA_FORALL_DELETE;
+	} else {
+		if (!(ioth_confdata_setflags(data, IOTH_CONFDATA_ACTIVE) & IOTH_CONFDATA_ACTIVE))
+			ioth_ipaddr_add(stack, AF_INET, &ipaddr->addr, ipaddr->prefixlen, ioth_confdata_getifindex(data));
+		return 0;
+	}
 }
 
 static int ioth_ip_setroute4(void *data, void *arg) {
-  time_t *latest_timestamp = arg;
-  struct in_addr *ipaddr =  data;
-  struct ioth *stack = ioth_confdata_getstack(data);
-  time_t timestamp = ioth_confdata_gettimestamp(data);
-  if (timestamp < *latest_timestamp) {
-    if (ioth_confdata_clrflags(data, IOTH_CONFDATA_ACTIVE) & IOTH_CONFDATA_ACTIVE)
-      ioth_iproute_del(stack, AF_INET, NULL, 0, ipaddr, 0);
-    return IOTH_CONFDATA_FORALL_DELETE;
-  } else {
-    if (!(ioth_confdata_setflags(data, IOTH_CONFDATA_ACTIVE) & IOTH_CONFDATA_ACTIVE))
-      ioth_iproute_add(stack, AF_INET, NULL, 0, ipaddr, 0);
-    return 0;
-  }
+	time_t *latest_timestamp = arg;
+	struct in_addr *ipaddr =  data;
+	struct ioth *stack = ioth_confdata_getstack(data);
+	time_t timestamp = ioth_confdata_gettimestamp(data);
+	if (timestamp < *latest_timestamp) {
+		if (ioth_confdata_clrflags(data, IOTH_CONFDATA_ACTIVE) & IOTH_CONFDATA_ACTIVE)
+			ioth_iproute_del(stack, AF_INET, NULL, 0, ipaddr, 0);
+		return IOTH_CONFDATA_FORALL_DELETE;
+	} else {
+		if (!(ioth_confdata_setflags(data, IOTH_CONFDATA_ACTIVE) & IOTH_CONFDATA_ACTIVE))
+			ioth_iproute_add(stack, AF_INET, NULL, 0, ipaddr, 0);
+		return 0;
+	}
 }
 
 static int ioth_ip_cleanold(void *data, void *arg) {
-  time_t *latest_timestamp = arg;
-  time_t timestamp = ioth_confdata_gettimestamp(data);
-  if (timestamp < *latest_timestamp)
-    return IOTH_CONFDATA_FORALL_DELETE;
-  else
-    return 0;
+	time_t *latest_timestamp = arg;
+	time_t timestamp = ioth_confdata_gettimestamp(data);
+	if (timestamp < *latest_timestamp)
+		return IOTH_CONFDATA_FORALL_DELETE;
+	else
+		return 0;
 }
 
 void iothconf_ip_update(struct ioth *stack, unsigned int ifindex, uint8_t type, uint32_t config_flags) {

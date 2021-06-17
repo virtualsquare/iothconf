@@ -20,38 +20,38 @@ static void usage(char *progname) {
 
 static void configure(struct ioth *stack, char *config) {
 	if (strcmp(config, "rc") == 0) {
-      char *rc = ioth_resolvconf(stack, NULL);
-      if (rc) {
-        printf("----\n%s----\n", rc);
-        free(rc);
-      } else
-        perror("rc");
-    } else {
-      int rv = ioth_config(stack, config);
-      if (rv < 0)
-        perror("ioth_config");
-			else {
-				printf("ioth_config confirmed:");
-				if (rv & IOTHCONF_STATIC) printf(" static");
-				if (rv & IOTHCONF_ETH) printf(" eth");
-				if (rv & IOTHCONF_DHCP) printf(" dhcp");
-				if (rv & IOTHCONF_DHCPV6) printf(" dhcpv6");
-				if (rv & IOTHCONF_RD) printf(" rd");
-				printf("\n");
-			}
-    }
+		char *rc = ioth_resolvconf(stack, NULL);
+		if (rc) {
+			printf("----\n%s----\n", rc);
+			free(rc);
+		} else
+			perror("rc");
+	} else {
+		int rv = ioth_config(stack, config);
+		if (rv < 0)
+			perror("ioth_config");
+		else {
+			printf("ioth_config confirmed:");
+			if (rv & IOTHCONF_STATIC) printf(" static");
+			if (rv & IOTHCONF_ETH) printf(" eth");
+			if (rv & IOTHCONF_DHCP) printf(" dhcp");
+			if (rv & IOTHCONF_DHCPV6) printf(" dhcpv6");
+			if (rv & IOTHCONF_RD) printf(" rd");
+			printf("\n");
+		}
+	}
 }
 
 int main(int argc, char *argv[]) {
 	char *progname = basename(argv[0]);
 	static char *short_options = "s:iv:h";
 	static struct option long_options[] = {
-                   {"stack",   required_argument, 0,  's' },
-                   {"interactive",   no_argument, 0,  'i' },
-                   {"vnl",     required_argument, 0,  'v' },
-                   {"help",          no_argument, 0,  'h' },
-                   {0,         0,                 0,  0 }
-               };
+		{"stack",   required_argument, 0,  's' },
+		{"interactive",   no_argument, 0,  'i' },
+		{"vnl",     required_argument, 0,  'v' },
+		{"help",          no_argument, 0,  'h' },
+		{0,         0,                 0,  0 }
+	};
 
 	char *stacklib = NULL;
 	char *vnl = NULL;
