@@ -2,7 +2,7 @@
  *   iothconf_rd.c: auto configuration library for ioth
  *       router discovery protocol (partial implementation of RFC 4861
  *
- *   Copyright 1 Renzo Davoli - Virtual Square Team
+ *   Copyright 2021 Renzo Davoli - Virtual Square Team
  *   University of Bologna - Italy
  *
  *   This library is free software; you can redistribute it and/or modify it

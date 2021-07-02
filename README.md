@@ -16,7 +16,7 @@ The API of the iothconf library has two entries:
      int ioth_config(struct ioth *stack, char *config);
 ```
 
-* `ioth_resolvconf`: return a congiuration string for the domain name resolution library (e.g. [iothdns](
+* `ioth_resolvconf`: return a configuration string for the domain name resolution library (e.g. [iothdns](
 https://github.com/virtualsquare/iothdns). The syntax of the configuration file is consistent with `resolv.conf`(5).
 (the string is dynamically allocated: use free(3) to deallocate it).
 It returns NULL and errno = 0 if nothing chaned since the previous call. In case of error it returns NULL and errno != 0.
@@ -51,7 +51,7 @@ sudo make uninstall
 The following example creates an IoTh stack with one interface connected to `vxvde://234.0.0.2`.
 
 ```C
-     struct ioth *stack = ioth_sewstack("vdestack","vxvde://234.0.0.1");
+     struct ioth *stack = ioth_newstack("vdestack","vxvde://234.0.0.1");
 ```
 
 ### Configure the stack:
