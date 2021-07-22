@@ -16,7 +16,7 @@
 #define DEFAULT_INTERFACE "vde0"
 #define TIME_INFINITY 0xffffffff
 
-int iothconf_eth   (struct ioth *stack, unsigned int ifindex, 
+int iothconf_eth   (struct ioth *stack, unsigned int ifindex,
 		const char *fqdn, const char *mac, uint32_t config_flags);
 int iothconf_dhcp  (struct ioth *stack, unsigned int ifindex, const char *fqdn, uint32_t config_flags);
 int iothconf_dhcpv6(struct ioth *stack, unsigned int ifindex, const char *fqdn, uint32_t config_flags);

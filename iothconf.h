@@ -7,9 +7,9 @@
  *   iface=... : select the interface e.g. iface=eth0 (default value vde0)
  *   ifindex=... : id of the interface (it can be used instead of iface)
  *   fqdn=.... : set the fully qualified domain name for dhcp, dhcpv6 slaac-hash-autoconf
- *   mac=... : (or macaddr) define the macaddr for eth here below. 
+ *   mac=... : (or macaddr) define the macaddr for eth here below.
  (e.g. eth,mac=10:a1:b2:c3:d4:e5)
- *   eth : turn on the interface (and set the MAC address if requested 
+ *   eth : turn on the interface (and set the MAC address if requested
  *              or a hash based MAC address if fqdn is defined)
  *   dhcp : (or dhcp4 or dhcpv4) use dhcp (IPv4)
  *   dhcp6 : (or dhcpv6) use dhcpv6 (for IPv6)
@@ -32,7 +32,7 @@
  *   static data, dhcp, router discovery and dhcpv6
  *   The current confiuration is a merge of all the parameters collected from
  *   all the sources. It is possible to update each source independently:
- *   for each source an update/recofnigration overwrites all the configuration 
+ *   for each source an update/recofnigration overwrites all the configuration
  *   parameters previously acquired from that source.
  */
 

@@ -392,7 +392,7 @@ static int dhcp_get(int sendtype, int fd, const struct sockaddr_ll *dest_addr, s
 								break;
 							case OPTION_DOMNAME:
 								{
-									/* add strung termination */
+									/* add string termination */
 									char domname[opt_len + 1];
 									snprintf(domname, opt_len + 1,  "%.*s", opt_len, inbuf.options + ftell(optf));
 									ioth_confdata_add(data->stack, data->ifindex, IOTH_CONFDATA_DHCP4_DOMAIN, data->timestamp, 0,

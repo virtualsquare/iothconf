@@ -32,7 +32,7 @@
 /* configuration for ethernet:
 	 if fqdn, create a hash based MAC address (so that the node always gets the same MAC);
 	 turn on the interface */
-int iothconf_eth(struct ioth *stack, unsigned int ifindex, 
+int iothconf_eth(struct ioth *stack, unsigned int ifindex,
 		const char *fqdn, const char *mac, uint32_t config_flags) {
 	(void) config_flags;
 	uint8_t macaddr[ETH_ALEN];
@@ -159,9 +159,9 @@ int ioth_config(struct ioth *stack, char *config) {
 														 IOTHCONF_ETH | IOTHCONF_DHCPV6 | IOTHCONF_RD;
 													 break;
 
-			case STRCASE(minus,s,t,a,t,i,c): 
+			case STRCASE(minus,s,t,a,t,i,c):
 													 clean_flags |= IOTHCONF_STATIC; break;
-			case STRCASE(minus,e,t,h): 
+			case STRCASE(minus,e,t,h):
 													 clean_flags |= IOTHCONF_ETH; break;
 			case STRCASE(minus,d,h,c,p):
 			case STRCASE(minus,d,h,c,p,4):
