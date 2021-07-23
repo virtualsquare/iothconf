@@ -114,7 +114,7 @@ static int iothconf_static(struct ioth *stack, unsigned int ifindex, char **tags
 	return 0;
 }
 
-int ioth_config(struct ioth *stack, char *config) {
+static int _ioth_config(struct ioth *stack, const char *config, int from_ioth_newstackc) {
 	uint32_t config_flags = 0;
 	uint32_t clean_flags = 0;
 	char *fqdn = NULL;
@@ -122,9 +122,8 @@ int ioth_config(struct ioth *stack, char *config) {
 	char *mac = NULL;
 	int ifindex = 0;
 	int debug = 0;
+	if (config == NULL) config = "";
 	int tagc = stropt(config, NULL, NULL, NULL);
-	if(tagc <= 1)
-		return errno = EINVAL, -1;
 	char buf[strlen(config) + 1];
 	char *tags[tagc];
 	char *args[tagc];
@@ -204,65 +203,74 @@ int ioth_config(struct ioth *stack, char *config) {
 																	 config_flags |= IOTHCONF_STATIC; break;
 			case STRCASE(d,e,b,u,g):
 																	 debug = 1; break;
+			case STRCASE(s,t,a,c,k):
+			case STRCASE(v,n,l):
+																	 if (from_ioth_newstackc == 0)
+																		 return errno = EINVAL, -1;
+																	 break;
 			default:
 																	 return errno = EINVAL, -1;
 		}
 	}
-	if (iface == NULL) iface = DEFAULT_INTERFACE;
-	if (ifindex == 0) ifindex = ioth_if_nametoindex(stack, iface);
-	if (ifindex <= 0)
-		return errno = EINVAL, -1;
 	int retvalue = 0;
-	if (clean_flags & IOTHCONF_STATIC)
-		iothconf_ip_clean(stack, ifindex, IOTH_CONFDATA_STATIC_TIMESTAMP, 0);
-	if (clean_flags & IOTHCONF_RD)
-		iothconf_ip_clean(stack, ifindex, IOTH_CONFDATA_RD6_TIMESTAMP, 0);
-	if (clean_flags & IOTHCONF_DHCPV6)
-		iothconf_ip_clean(stack, ifindex, IOTH_CONFDATA_DHCP6_TIMESTAMP, 0);
-	if (clean_flags & IOTHCONF_DHCP)
-		iothconf_ip_clean(stack, ifindex, IOTH_CONFDATA_DHCP4_TIMESTAMP, 0);
-	if (clean_flags & IOTHCONF_ETH)
-		iothconf_cleaneth(stack, ifindex, 0);
-	if (config_flags & IOTHCONF_ETH)
-		if (iothconf_eth(stack, ifindex, fqdn, mac, config_flags) == 0)
-			retvalue |= IOTHCONF_ETH;
-	if (config_flags & IOTHCONF_RD)
-		if (iothconf_rd(stack, ifindex, fqdn, config_flags) == 0)
-			retvalue |= IOTHCONF_RD;
-	if (config_flags & IOTHCONF_DHCPV6)
-		if (iothconf_dhcpv6(stack, ifindex, fqdn, config_flags) == 0)
-			retvalue |= IOTHCONF_DHCPV6;
-	if (config_flags & IOTHCONF_DHCP)
-		if (iothconf_dhcp(stack, ifindex, fqdn, config_flags) == 0)
-			retvalue |= IOTHCONF_DHCP;
-	if (config_flags & IOTHCONF_STATIC)
-		if (iothconf_static(stack, ifindex, tags, args, config_flags) == 0)
-			retvalue |= IOTHCONF_STATIC;
-	if(debug)
-		iothconf_data_debug(stack, ifindex);
+	if (config_flags || clean_flags || debug) {
+		if (iface == NULL) iface = DEFAULT_INTERFACE;
+		if (ifindex == 0) ifindex = ioth_if_nametoindex(stack, iface);
+		if (ifindex <= 0)
+			return errno = EINVAL, -1;
+		if (clean_flags & IOTHCONF_STATIC)
+			iothconf_ip_clean(stack, ifindex, IOTH_CONFDATA_STATIC_TIMESTAMP, 0);
+		if (clean_flags & IOTHCONF_RD)
+			iothconf_ip_clean(stack, ifindex, IOTH_CONFDATA_RD6_TIMESTAMP, 0);
+		if (clean_flags & IOTHCONF_DHCPV6)
+			iothconf_ip_clean(stack, ifindex, IOTH_CONFDATA_DHCP6_TIMESTAMP, 0);
+		if (clean_flags & IOTHCONF_DHCP)
+			iothconf_ip_clean(stack, ifindex, IOTH_CONFDATA_DHCP4_TIMESTAMP, 0);
+		if (clean_flags & IOTHCONF_ETH)
+			iothconf_cleaneth(stack, ifindex, 0);
+		if (config_flags & IOTHCONF_ETH)
+			if (iothconf_eth(stack, ifindex, fqdn, mac, config_flags) == 0)
+				retvalue |= IOTHCONF_ETH;
+		if (config_flags & IOTHCONF_RD)
+			if (iothconf_rd(stack, ifindex, fqdn, config_flags) == 0)
+				retvalue |= IOTHCONF_RD;
+		if (config_flags & IOTHCONF_DHCPV6)
+			if (iothconf_dhcpv6(stack, ifindex, fqdn, config_flags) == 0)
+				retvalue |= IOTHCONF_DHCPV6;
+		if (config_flags & IOTHCONF_DHCP)
+			if (iothconf_dhcp(stack, ifindex, fqdn, config_flags) == 0)
+				retvalue |= IOTHCONF_DHCP;
+		if (config_flags & IOTHCONF_STATIC)
+			if (iothconf_static(stack, ifindex, tags, args, config_flags) == 0)
+				retvalue |= IOTHCONF_STATIC;
+		if(debug)
+			iothconf_data_debug(stack, ifindex);
+	}
 	return retvalue;
 }
 
-char *ioth_resolvconf(struct ioth *stack, char *config) {
+int ioth_config(struct ioth *stack, const char *config) {
+	return _ioth_config(stack, config, 0);
+}
+
+char *ioth_resolvconf(struct ioth *stack, const char *config) {
 	char *iface = NULL;
 	int ifindex = 0;
 	if (config == NULL) config = "";
 	int tagc = stropt(config, NULL, NULL, NULL);
 	char buf[strlen(config) + 1];
-	if(tagc > 1) {
-		char *tags[tagc];
-		char *args[tagc];
-		stropt(config, tags, args, buf);
-		for (int i = 0; i < tagc - 1; i++) {
-			switch(strcase(tags[i])) {
-				case STRCASE(i,f,a,c,e): iface = args[i]; break;
-				case STRCASE(i,f,i,n,d,e,x):
-																 if (args[i] != NULL)
-																	 ifindex = strtoul(args[i], NULL, 10);
-																 break;
-				default:
-																 return errno = EINVAL, NULL;
-			}
+	char *tags[tagc];
+	char *args[tagc];
+	stropt(config, tags, args, buf);
+	for (int i = 0; i < tagc - 1; i++) {
+		switch(strcase(tags[i])) {
+			case STRCASE(i,f,a,c,e): iface = args[i]; break;
+			case STRCASE(i,f,i,n,d,e,x):
+															 if (args[i] != NULL)
+																 ifindex = strtoul(args[i], NULL, 10);
+															 break;
+			default:
+															 return errno = EINVAL, NULL;
 		}
 	}
 	if (iface == NULL) iface = DEFAULT_INTERFACE;
@@ -272,3 +280,31 @@ char *ioth_resolvconf(struct ioth *stack, char *config) {
 	return iothconf_resolvconf(stack, ifindex);
 }
 
+struct ioth *ioth_newstackc(const char *stack_config) {
+	struct ioth *ioth_stack;
+	char *stack = NULL;
+	char *vnl = NULL;
+	if (stack_config == NULL) stack_config = "";
+	int tagc = stropt(stack_config, NULL, NULL, NULL);
+	char buf[strlen(stack_config) + 1];
+	char *tags[tagc];
+	char *args[tagc];
+	stropt(stack_config, tags, args, buf);
+	for (int i = 0; i < tagc - 1; i++) {
+		switch(strcase(tags[i])) {
+			case STRCASE(s,t,a,c,k):
+				stack = args[i];
+				break;
+			case STRCASE(v,n,l):
+				vnl = args[i];
+				break;
+		}
+	}
+	if ((ioth_stack = ioth_newstack(stack, vnl)) == NULL)
+		return NULL;
+	if (_ioth_config(ioth_stack, stack_config, 1) == -1) {
+		ioth_delstack(ioth_stack);
+		return NULL;
+	}
+	return ioth_stack;
+}

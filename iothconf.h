@@ -36,7 +36,7 @@
  *   parameters previously acquired from that source.
  */
 
-int ioth_config(struct ioth *stack, char *config);
+int ioth_config(struct ioth *stack, const char *config);
 
 /* ioth_config return value is -1 in case of error or a mask of the following bits.
 	 each bit is on if the corresponding configuration succeeded */
@@ -57,6 +57,18 @@ int ioth_config(struct ioth *stack, char *config);
  *   In case of error it returns NULL and errno != 0
  */
 
-char *ioth_resolvconf(struct ioth *stack, char *config);
+char *ioth_resolvconf(struct ioth *stack, const char *config);
+
+/* ioth_newstackc creates a stack and configure it.
+ *    ioth_newstackc:
+ *      - is a shortcut call for ioth_newstack+ioth_config;
+ *      - uses only one string for the whole creation/configuration;
+ *      - creates a stack with zero or one interfaces:
+ *          (this is the most common scenario);
+ *      - supports all the options of ioth_config plus:
+ *          stack=... : to select the  stack implementation;
+ *          vnl=... : to select the VDE network.
+ */
+struct ioth *ioth_newstackc(const char *stack_config);
 
 #endif
