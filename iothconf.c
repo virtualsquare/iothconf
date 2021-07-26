@@ -217,7 +217,7 @@ static int _ioth_config(struct ioth *stack, const char *config, int from_ioth_ne
 		if (iface == NULL) iface = DEFAULT_INTERFACE;
 		if (ifindex == 0) ifindex = ioth_if_nametoindex(stack, iface);
 		if (ifindex <= 0)
-			return errno = EINVAL, -1;
+			return errno = ENODEV, -1;
 		if (clean_flags & IOTHCONF_STATIC)
 			iothconf_ip_clean(stack, ifindex, IOTH_CONFDATA_STATIC_TIMESTAMP, 0);
 		if (clean_flags & IOTHCONF_RD)
@@ -276,7 +276,7 @@ char *ioth_resolvconf(struct ioth *stack, const char *config) {
 	if (iface == NULL) iface = DEFAULT_INTERFACE;
 	if (ifindex == 0) ifindex = ioth_if_nametoindex(stack, DEFAULT_INTERFACE);
 	if (ifindex <= 0)
-		return errno = EINVAL, NULL;
+		return errno = ENODEV, NULL;
 	return iothconf_resolvconf(stack, ifindex);
 }
 
