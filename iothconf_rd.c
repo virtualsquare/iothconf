@@ -55,7 +55,7 @@ static int iothconf_rd_proto(struct ioth *stack, unsigned int ifindex, const cha
 		.l.len = sizeof(struct icmp6_LLA_attr) / 8,
 	};
 	time_t ioth_timestamp = ioth_confdata_new_timestamp(stack, ifindex, IOTH_CONFDATA_RD6_TIMESTAMP);
-	nlinline_linkgetaddr(ifindex, msg.l.addr);
+	ioth_linkgetaddr(stack, ifindex, msg.l.addr);
 	struct sockaddr_in6 dst = {
 		.sin6_family = AF_INET6,
 		.sin6_addr = ll_allrouters,
