@@ -63,7 +63,7 @@ char *ioth_resolvconf(struct ioth *stack, const char *config);
  *    ioth_newstackc:
  *      - is a shortcut call for ioth_newstack+ioth_config;
  *      - uses only one string for the whole creation/configuration;
- *      - creates a stack with zero or one interfaces:
+ *      - creates a stack with zero or one interface:
  *          (this is the most common scenario);
  *      - supports all the options of ioth_config plus:
  *          stack=... : to select the  stack implementation;

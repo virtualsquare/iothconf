@@ -9,7 +9,7 @@
 * router discovery (IPv6, RFC 4861)
 * DHCPv6 (IPv6, RFC 8415 and 4704)
 
-The API of the iothconf library has two entries:
+The API of the iothconf library has three entries:
 
 * `ioth_config`: configure the stack
 ```C
@@ -23,6 +23,16 @@ It returns NULL and errno = 0 if nothing chaned since the previous call. In case
 
 ```C
      char *ioth_resolvconf(struct ioth *stack, char *config);
+```
+
+* `ioth_newstackc` is a shortcut to create a stack and configure it. 
+It is a shortcut call for ioth\_newstack+ioth\_config. It needs one string for the whole
+creation/configuration process. It permits to create stacks with zero or one interface (the most common scenario).
+It supports all the option of ioth\_config plus `stack=...` to select the stack implementation and `vnl=...` to
+select the VDE network.
+
+```C
+     struct ioth *ioth_newstackc(const char *stack_config);
 ```
 
 ## Compile and Install
@@ -78,6 +88,14 @@ The following example creates an IoTh stack with one interface connected to `vxv
 
 ```C
      ioth_config(stack, "auto,fqdn=host.v2.cs.unibo.it");
+```
+
+### Create and configure the stack using one call and one configuration string:
+
+```C
+     struct ioth *stack = ioth_newstackc("stack=vdestack,vnl=vxvde://234.0.0.1,eth,ip=10.0.0.1/24,gw=10.0.0.254");
+     struct ioth *stack = ioth_newstackc("stack=vdestack,vnl=vxvde://234.0.0.1,eth,dhcp");
+     struct ioth *stack = ioth_newstackc("stack=vdestack,vnl=vxvde://234.0.0.1,auto,fqdn=host.v2.cs.unibo.it");
 ```
 
 ## Options supported by `ioth_config`
