@@ -98,7 +98,9 @@ The following example creates an IoTh stack with one interface connected to `vxv
      struct ioth *stack = ioth_newstackc("stack=vdestack,vnl=vxvde://234.0.0.1,auto,fqdn=host.v2.cs.unibo.it");
 ```
 
-## Options supported by `ioth_config`
+## Options supported by `ioth_config` and `ioth_newstackc`
+ *   `stack=...`: (`ioth_newstackc` only) define the ip stack implementation
+ *   `vnl=...`: (`ioth_newstackc` only) define the vde network to join
  *   `iface=...` : select the interface e.g. `iface=eth0` (default value vde0)
  *   `ifindex=...` : id of the interface (it can be used instead of `iface`)
  *   `fqdn=....` : set the fully qualified domain name for dhcp, dhcpv6 slaac-hash-autoconf

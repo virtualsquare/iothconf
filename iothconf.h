@@ -68,6 +68,7 @@ char *ioth_resolvconf(struct ioth *stack, const char *config);
  *      - supports all the options of ioth_config plus:
  *          stack=... : to select the  stack implementation;
  *          vnl=... : to select the VDE network.
+ *    it returns NULL in case or error.
  */
 struct ioth *ioth_newstackc(const char *stack_config);
 
