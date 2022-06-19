@@ -13,7 +13,7 @@ static void usage(char *progname) {
 			"OPTIONS:\n"
 			" -s --stack:       ioth stack implementation (default kernel)\n"
 			" -v --vnl:         vde's virtual network locator\n"
-			" -i --interactive: interctive mode\n"
+			" -i --interactive: interactive mode\n"
 			" -h, --help:       usage message\n", progname);
 	exit(1);
 }
