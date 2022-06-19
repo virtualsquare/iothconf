@@ -187,3 +187,29 @@ void ioth_confdata_del_timestamp(struct ioth *stack, uint32_t ifindex, uint8_t t
 	type = TIMESTAMP(type);
 	ioth_confdata_forall(stack, ifindex, type, del_timestamp_cb, &timestamp);
 }
+
+struct deldata {
+	void *data;
+	uint16_t datalen;
+	int found;
+};
+
+static int ioth_confdata_del_cb(void *data, void *arg) {
+	struct deldata *dd = arg;
+	struct ioth_confdata *ioth_confdata = ((struct ioth_confdata *) data) - 1;
+
+	if (ioth_confdata->datalen == dd->datalen &&
+			memcmp(data, dd->data, dd->datalen) == 0) {
+		ioth_confdata->timestamp = 0;
+		dd->found = 1;
+		return IOTH_CONFDATA_FORALL_BREAK;
+	} else
+		return 0;
+}
+
+int ioth_confdata_del(struct ioth *stack, uint32_t ifindex, uint8_t type,
+    void *data, uint16_t datalen) {
+	struct deldata dd = {data, datalen, 0};
+	ioth_confdata_forall(stack, ifindex, type, ioth_confdata_del_cb, &dd);
+	return dd.found ? 0 : -1;
+}

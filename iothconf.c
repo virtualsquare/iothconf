@@ -54,7 +54,7 @@ void iothconf_cleaneth(struct ioth *stack, unsigned int ifindex, uint32_t config
 }
 
 static int iothconf_static(struct ioth *stack, unsigned int ifindex, char **tags, char **args, uint32_t config_flags) {
-	time_t ioth_timestamp = 0; // static! all records dated back to 1970 Jan 01
+	time_t ioth_timestamp = 1; // static! all records dated back to 1970 Jan 01 0:00:01
 	int prefix;
 	char *prefixstr;
 	uint8_t addr[sizeof(struct in6_addr)];
@@ -83,6 +83,29 @@ static int iothconf_static(struct ioth *stack, unsigned int ifindex, char **tags
 							.prefixlen = (prefix == 0) ? 24 : prefix,
 							.leasetime = TIME_INFINITY);
 				break;
+			case STRCASE(minus,i,p):
+				if (*args == NULL) break;
+				prefixstr = strchr(*args, '/');
+				if (prefixstr == NULL)
+					prefix = 0;
+				else {
+					*prefixstr++ = 0;
+					prefix = strtol(prefixstr, NULL, 10);
+				}
+				if (inet_pton(AF_INET6, *args, addr))
+					ioth_confdata_del_data(stack, ifindex, IOTH_CONFDATA_STATIC6_ADDR,
+							struct ioth_confdata_ip6addr,
+							.addr = *((struct in6_addr *)(&addr)),
+							.prefixlen = (prefix == 0) ? 64 : prefix,
+							.preferred_lifetime = TIME_INFINITY,
+							.valid_lifetime = TIME_INFINITY);
+				else if (inet_pton(AF_INET, *args, addr))
+					ioth_confdata_del_data(stack, ifindex, IOTH_CONFDATA_STATIC4_ADDR,
+							struct ioth_confdata_ipaddr,
+							.addr = *((struct in_addr *)(&addr)),
+							.prefixlen = (prefix == 0) ? 24 : prefix,
+							.leasetime = TIME_INFINITY);
+				break;
 			case STRCASE(g,w):
 				if (*args == NULL) break;
 				if (inet_pton(AF_INET6, *args, addr))
@@ -94,6 +117,17 @@ static int iothconf_static(struct ioth *stack, unsigned int ifindex, char **tags
 					ioth_confdata_add(stack, ifindex, IOTH_CONFDATA_STATIC4_ROUTE, ioth_timestamp, 0,
 							addr, sizeof(struct in_addr));
 				break;
+			case STRCASE(minus,g,w):
+				if (*args == NULL) break;
+				if (inet_pton(AF_INET6, *args, addr))
+					ioth_confdata_del_data(stack, ifindex, IOTH_CONFDATA_STATIC6_ROUTE,
+							struct ioth_confdata_ip6addr,
+							.addr = *((struct in6_addr *)(&addr)),
+							.valid_lifetime = TIME_INFINITY);
+				else if (inet_pton(AF_INET, *args, addr))
+					ioth_confdata_del(stack, ifindex, IOTH_CONFDATA_STATIC4_ROUTE,
+							addr, sizeof(struct in_addr));
+				break;
 			case STRCASE(d,n,s):
 				if (inet_pton(AF_INET6, *args, addr))
 					ioth_confdata_add(stack, ifindex, IOTH_CONFDATA_STATIC6_DNS, ioth_timestamp, 0,
@@ -102,9 +136,22 @@ static int iothconf_static(struct ioth *stack, unsigned int ifindex, char **tags
 					ioth_confdata_add(stack, ifindex, IOTH_CONFDATA_STATIC4_DNS, ioth_timestamp, 0,
 							addr, sizeof(struct in_addr));
 				break;
+			case STRCASE(minus,d,n,s):
+				if (inet_pton(AF_INET6, *args, addr))
+					ioth_confdata_del(stack, ifindex, IOTH_CONFDATA_STATIC6_DNS,
+							addr, sizeof(struct in6_addr));
+				else if (inet_pton(AF_INET, *args, addr))
+					ioth_confdata_del(stack, ifindex, IOTH_CONFDATA_STATIC4_DNS,
+							addr, sizeof(struct in_addr));
+				break;
 			case STRCASE(d,o,m,a,i,n):
 				if (*args == NULL) break;
 				ioth_confdata_add(stack, ifindex, IOTH_CONFDATA_STATIC_DOMAIN, ioth_timestamp, 0,
+						*args, strlen(*args) + 1);
+				break;
+			case STRCASE(minus,d,o,m,a,i,n):
+				if (*args == NULL) break;
+				ioth_confdata_del(stack, ifindex, IOTH_CONFDATA_STATIC_DOMAIN,
 						*args, strlen(*args) + 1);
 				break;
 		}
@@ -200,6 +247,10 @@ static int _ioth_config(struct ioth *stack, const char *config, int from_ioth_ne
 			case STRCASE(g,w):
 			case STRCASE(d,n,s):
 			case STRCASE(d,o,m,a,i,n):
+			case STRCASE(minus,i,p):
+			case STRCASE(minus,g,w):
+			case STRCASE(minus,d,n,s):
+			case STRCASE(minus,d,o,m,a,i,n):
 																	 config_flags |= IOTHCONF_STATIC; break;
 			case STRCASE(d,e,b,u,g):
 																	 debug = 1; break;

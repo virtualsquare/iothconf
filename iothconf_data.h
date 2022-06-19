@@ -70,6 +70,14 @@ struct ioth;
 void ioth_confdata_add(struct ioth *stack, uint32_t ifindex, uint8_t type, time_t time, uint8_t flags,
 		void *data, uint16_t datalen);
 
+/* delete an element. retvalue 0->foune and deleted,  < 0 means not found */
+#define ioth_confdata_del_data(stack, ifindex, type, datatype, ...) \
+	ioth_confdata_del(stack, ifindex, type, \
+			&((datatype) { __VA_ARGS__ }), sizeof(datatype))
+
+int ioth_confdata_del(struct ioth *stack, uint32_t ifindex, uint8_t type,
+    void *data, uint16_t datalen);
+
 /* iterate on all selected records:
 	 stack/ifindex/type are select keys.
 	 stack can be IOTH_CONFDATA_ANYSTACK, ifindex and type can be zero.
