@@ -54,7 +54,7 @@ void iothconf_cleaneth(struct ioth *stack, unsigned int ifindex, uint32_t config
 }
 
 static int iothconf_static(struct ioth *stack, unsigned int ifindex, char **tags, char **args, uint32_t config_flags) {
-	time_t ioth_timestamp = ioth_confdata_new_timestamp(stack, ifindex, IOTH_CONFDATA_STATIC_TIMESTAMP);
+	time_t ioth_timestamp = 0; // static! all records dated back to 1970 Jan 01
 	int prefix;
 	char *prefixstr;
 	uint8_t addr[sizeof(struct in6_addr)];
