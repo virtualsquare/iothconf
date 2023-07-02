@@ -45,7 +45,7 @@ install(FILES iothconf.h DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 # install(FILES ${CMAKE_CURRENT_BINARY_DIR}/iothconf.pc
 # DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
 
-# add_subdirectory(man)
+add_subdirectory(man)
 add_subdirectory(test)
 
 add_custom_target(uninstall
