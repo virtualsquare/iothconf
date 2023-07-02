@@ -9,7 +9,7 @@
 	 data structure, each ioth node should have one to a few addresses so it would not matter after all.
 
 	 entries are timestamped, each time is created or confirmed the timestamp is updated.
-	 The tiemstamp of the latest message processes is stored as an element in the data structure itself:
+	 The timestamp of the latest message processes is stored as an element in the data structure itself:
 	 type 0x40 for DHCP, 0x50 for RD (rotuer advertisement), 0x60 for DHCPv6, 0x70 for static defs.
 	 (0x40 is the msg timestamp for all 0x4* records, 0x50 for 0x5*, 0x60 for 0x6*, and 0x70 for 0x7*)
 
@@ -23,8 +23,8 @@
 	 - all the records with timestamp >= message timestamp are valid
 	 - those with timestamp < message timestamp are obsolete (have not been confirmed in the latest msg).
 
-	 01xx 100x hex 48,49,58,59,68,69,78,79 are reserved fod DNS
-	 01xx 101x hex 4a,4b,5a,5b,6a,6b,7a,7b are reserved fod DOMAIN
+	 01xx 100x hex 48,49,58,59,68,69,78,79 are reserved for DNS
+	 01xx 101x hex 4a,4b,5a,5b,6a,6b,7a,7b are reserved for DOMAIN
  */
 
 #define IOTH_CONFDATA_STATIC_TIMESTAMP 0x70 // no data

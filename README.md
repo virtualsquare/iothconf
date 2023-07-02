@@ -19,7 +19,7 @@ The API of the iothconf library has three entries:
 * `ioth_resolvconf`: return a configuration string for the domain name resolution library (e.g. [iothdns](
 https://github.com/virtualsquare/iothdns). The syntax of the configuration file is consistent with `resolv.conf`(5).
 (the string is dynamically allocated: use free(3) to deallocate it).
-It returns NULL and errno = 0 if nothing chaned since the previous call. In case of error it returns NULL and errno != 0.
+It returns NULL and errno = 0 if nothing changed since the previous call. In case of error it returns NULL and errno != 0.
 
 ```C
      char *ioth_resolvconf(struct ioth *stack, char *config);
@@ -84,7 +84,7 @@ The following example creates an IoTh stack with one interface connected to `vxv
      ioth_config(stack, "eth,dhcp,dhcp6,rd,fqdn=host.v2.cs.unibo.it");
 ```
 
-* the same above using the shotcut auto ( = eth,dhcp,dhcp6,rd )
+* the same above using the shortcut auto ( = eth,dhcp,dhcp6,rd )
 
 ```C
      ioth_config(stack, "auto,fqdn=host.v2.cs.unibo.it");
